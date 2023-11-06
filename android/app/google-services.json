@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "552949337732",
+    "firebase_url": "https://cashmate-74a40-default-rtdb.firebaseio.com",
+    "project_id": "cashmate-74a40",
+    "storage_bucket": "cashmate-74a40.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552949337732:android:d0b7b7bf75e37fbab6bcd1",
+        "android_client_info": {
+          "package_name": "com.example.cashmateapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjPxFAWuQgkNmsGr-4S1DJzxadBJ2HU_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552949337732:android:1dfc24a1d4cecd80b6bcd1",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjPxFAWuQgkNmsGr-4S1DJzxadBJ2HU_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
