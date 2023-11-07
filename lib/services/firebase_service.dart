@@ -74,7 +74,7 @@ Future<void> deleteGasto(String documentId) async {
 Future<void> addGasto(String title, double totalAmount, DateTime date,
     List<String> nombresPersonas, List<double> montosAsignados) async {
   try {
-    // Tu referencia a la base de datos Firestore
+    //referencia a la base de datos Firestore
     final DocumentReference newDocument =
         await FirebaseFirestore.instance.collection('gasto').add({
       'titulo': title,

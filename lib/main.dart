@@ -116,7 +116,7 @@ class Page1 extends StatelessWidget {
           );
         } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
           return const Center(
-            child: Text('No hay datos disponibles.'),
+            child: Text('No hay gastos registrados.'),
           );
         } else {
           return ListView.builder(
@@ -126,9 +126,27 @@ class Page1 extends StatelessWidget {
               return ListTile(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                title: Text(
-                  '${gasto['titulo']} ${gasto['montoTotal']}',
-                  style: const TextStyle(fontSize: 18),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceBetween, // Alinea el texto a la derecha
+                  children: [
+                    Text(
+                      gasto['titulo'],
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              Colors.blue), // Personaliza el estilo del título
+                    ),
+                    Text(
+                      '\$${gasto['montoTotal']}',
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors
+                              .green), // Personaliza el estilo del montoTotal
+                    ),
+                  ],
                 ),
                 onTap: () {
                   // Al hacer clic en un elemento, navega a la pantalla de detalles del gasto.

@@ -46,13 +46,13 @@ class DetallesGasto extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Título: $titulo',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      'Concepto: $titulo',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text('Monto Total: $montoTotal'),
                     Text('Fecha: $fecha'),
-                    const Text('Datos de las Personas:'),
+                    const Text('Monto asignado:'),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: datosPersonas.length,
@@ -60,7 +60,7 @@ class DetallesGasto extends StatelessWidget {
                         final nombre = datosPersonas.keys.toList()[index];
                         final monto = datosPersonas[nombre];
                         return ListTile(
-                          title: Text('$nombre: $monto'),
+                          title: Text('$nombre: \$$monto'),
                         );
                       },
                     ),
