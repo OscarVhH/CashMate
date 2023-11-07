@@ -1,6 +1,8 @@
 import 'package:cashmateapp/pages/add_gasto.dart';
 import 'package:cashmateapp/pages/add_name.dart';
+import 'package:cashmateapp/pages/detalleGasto.dart';
 import 'package:cashmateapp/pages/home_page.dart';
+import 'package:cashmateapp/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 //importaciones de firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -52,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('CashMate'),
         actions: [
           IconButton(
@@ -100,8 +103,47 @@ class Page1 extends StatelessWidget {
   const Page1({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [],
+    return FutureBuilder(
+      future: getGasto(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
+          return const Center(
+            child: Text('No hay datos disponibles.'),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: snapshot.data?.length,
+            itemBuilder: (context, index) {
+              final gasto = snapshot.data?[index];
+              return ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                title: Text(
+                  '${gasto['titulo']} ${gasto['montoTotal']}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                onTap: () {
+                  // Al hacer clic en un elemento, navega a la pantalla de detalles del gasto.
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetallesGasto(gasto['id']),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        }
+      },
     );
   }
 }

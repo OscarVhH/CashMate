@@ -12,7 +12,8 @@ class _AddGastoPageState extends State<AddGastoPage> {
   DateTime selectedDate = DateTime.now(); // Almacena la fecha seleccionada
   TextEditingController amountController = TextEditingController(
       text: '100'); // Controlador para el campo de cantidad
-  TextEditingController titleController = TextEditingController();
+  TextEditingController titleController =
+      TextEditingController(text: 'concepto');
   // Función para mostrar el selector de fecha
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -41,6 +42,9 @@ class _AddGastoPageState extends State<AddGastoPage> {
             TextField(
               controller: titleController,
               decoration: const InputDecoration(hintText: "Título"),
+              onChanged: (value) {
+                setState(() {});
+              },
             ),
             const SizedBox(height: 20), // Espacio entre campos
             InkWell(
@@ -167,25 +171,21 @@ class _ListarPersonasState extends State<ListarPersonas> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            String title = 'Gastp';
-                            title = widget.title;
-                            double totalAmount = widget
-                                .initialAmount; // Convierte el monto total del controlador.
+                            String title = widget.title;
+                            double totalAmount = widget.initialAmount;
                             DateTime selectedDate = widget.selectedDate;
                             List<String> nombresPersonas = [];
                             List<double> montosAsignados = [];
 
-// Itera a través de los controladores de montos y recopila los datos.
+                            // Itera a través de los controladores de montos y recopila los datos.
                             for (int i = 0; i < amountControllers.length; i++) {
-                              nombresPersonas.add(snapshot.data![i][
-                                  'nombre']); // Suponiendo que 'nombre' es el campo del nombre de la persona.
+                              nombresPersonas.add(snapshot.data![i]['nombre']);
                               montosAsignados
                                   .add(double.parse(amountControllers[i].text));
                             }
-                            print(totalAmount);
-                            print(selectedDate);
-                            print(nombresPersonas);
-                            print(montosAsignados);
+
+                            // Llama a la función para guardar el gasto
+
                             addGasto(title, totalAmount, selectedDate,
                                 nombresPersonas, montosAsignados);
                           },
