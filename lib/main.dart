@@ -4,6 +4,7 @@ import 'package:cashmateapp/pages/detalleGasto.dart';
 import 'package:cashmateapp/pages/home_page.dart';
 import 'package:cashmateapp/services/firebase_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 //importaciones de firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -167,12 +168,85 @@ class Page1 extends StatelessWidget {
 }
 
 class Page2 extends StatelessWidget {
-  const Page2({super.key});
+  const Page2({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return FutureBuilder(
+      future: getGasto(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
+          return const Center(
+            child: Text('No hay gastos registrados.'),
+          );
+        } else {
+          final gasto = snapshot.data;
+          final Map<String, double> combinedData = {};
+
+          if (gasto != null) {
+            for (int indice = 0; indice < gasto.length; indice++) {
+              final datosPersonas =
+                  gasto[indice]['datosPersonas'] as Map<String, dynamic>;
+
+              datosPersonas.forEach((nombre, monto) {
+                final double doubleMonto = (monto as num)
+                    .toDouble(); // Asegúrate de que el monto sea un double
+
+                if (combinedData.containsKey(nombre)) {
+                  // Si ya tenemos datos para este nombre, sumamos el monto existente
+                  combinedData[nombre] =
+                      (combinedData[nombre] ?? 0) + doubleMonto;
+                } else {
+                  // Si no tenemos datos para este nombre, lo agregamos
+                  combinedData[nombre] = doubleMonto;
+                }
+              });
+            }
+          }
+
+          // Procesar los datos consolidados para crear la gráfica
+          final List<PieChartSectionData> sections =
+              generatePieChartSections(combinedData);
+
+          // Crear la gráfica consolidada
+          final PieChart pieChart = PieChart(
+            PieChartData(
+              sections: sections,
+              // Otras configuraciones de la gráfica, como el tamaño y la posición, pueden ajustarse aquí
+            ),
+          );
+
+          return pieChart;
+        }
+      },
     );
+  }
+
+  List<PieChartSectionData> generatePieChartSections(
+      Map<String, double> combinedData) {
+    List<PieChartSectionData> sections = [];
+
+    // Itera a través de los datos consolidados y crea secciones para la gráfica
+    combinedData.forEach((nombre, monto) {
+      final section = PieChartSectionData(
+        color: Colors.blueAccent, // Puedes definir colores aleatorios
+        value: monto,
+        titleStyle: const TextStyle(color: Colors.white),
+        title: '$nombre \$$monto', // Muestra el nombre y el monto
+        radius: 100, // Radio de la sección
+      );
+
+      sections.add(section);
+    });
+
+    return sections;
   }
 }
